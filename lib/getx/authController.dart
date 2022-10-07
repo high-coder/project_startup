@@ -1,8 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:project_startup/screens/homeScreen/demoHome.dart';
 import 'package:project_startup/services/localStorage.dart';
 import 'package:project_startup/services/ourDatabase.dart';
+import 'package:project_startup/utils/error_assist.dart';
 
 import '../models/ourUser.dart';
 
@@ -10,7 +14,7 @@ class AuthService extends GetxController{
   final _auth = FirebaseAuth.instance;
   final LocalStorage localStorage = LocalStorage();
 
-  Future<String> loginUserWithGoogle() async {
+  Future<String> loginUserWithGoogle(BuildContext context) async {
     String retVal = "error";
     OurUser currentUser = OurUser();
 
@@ -43,6 +47,8 @@ class AuthService extends GetxController{
 
         } else {
           // in an actually correct application i should either delete the account of the user or do something about it
+          //if (!context.mounted) return;
+          Get.showSnackbar(const GetSnackBar(message: "Something went wrong",messageText: Text("Something went wrong"),));
         }
       } else {
         currentUser.uid = _authResult.user?.uid;
@@ -56,6 +62,12 @@ class AuthService extends GetxController{
           //userBox.put("data", currentUser);
           localStorage.setLoggedIn(user: currentUser);
         }
+      }
+      if(retVal == "success") {
+        Get.offAll(Home());
+      } else{
+        Get.showSnackbar(const GetSnackBar(message: "Something went wrong2",messageText: Text("Something went wrong"),));
+
       }
 
     } on FirebaseAuthException catch (e) {
