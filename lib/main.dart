@@ -1,7 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:project_startup/models/ourUser.dart';
+import 'package:project_startup/screens/jobscreen.dart';
+import 'package:project_startup/screens/mainscreen.dart';
+
+import 'models/ourUser.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -9,7 +13,7 @@ void main() async {
   await Firebase.initializeApp();
   await Hive.initFlutter();
   Hive.registerAdapter(OurUserDetailOriginal());
-  runApp(ProjectStartup());
+  runApp(const ProjectStartup());
 }
 
 class ProjectStartup extends StatefulWidget {
@@ -23,7 +27,8 @@ class _ProjectStartupState extends State<ProjectStartup> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Container(),
+      debugShowCheckedModeBanner: false,
+      home: JobScreen(),
     );
   }
 }
