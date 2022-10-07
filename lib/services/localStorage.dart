@@ -10,21 +10,23 @@ import 'package:project_startup/services/pritingService.dart';
 
 
 class LocalStorage {
-  void setLoggedIn({required OurUser user}) {
-    var _userBox = Boxes.getUserBox();
-    if (_userBox.isNotEmpty) {
+  void setLoggedIn({required OurUser user}) async{
+    Box _userBox = await Hive.openBox("userDetails");
+    //if (_userBox.isNotEmpty) {
       _userBox.put('user', user);
       Logger.logS('User stored in local Storage', 'localstorage');
-    } else {
-      Logger.logE('Error storing user ', 'localstorage');
-    }
+    //}
+    //else {
+      //Logger.logE('Error storing user ', 'localstorage');
+    //}
   }
 
-  getOurUser() {
+  getOurUser() async{
     try {
-      var _userBox = Boxes.getUserBox();
+      Box _userBox = await Hive.openBox("userDetails");
+
       OurUser ourUser = _userBox.get('user')!;
-      return OurUser;
+      return ourUser;
     } catch (e) {
       print(e);
 
@@ -34,7 +36,8 @@ class LocalStorage {
 
   deleteOurUser() async{
     try{
-      var _userBox = Boxes.getUserBox();
+      Box _userBox = await Hive.openBox("userDetails");
+
       OurUser ourUser = OurUser(
         name: "",
         uid: "",
