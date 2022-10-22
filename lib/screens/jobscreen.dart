@@ -20,7 +20,9 @@ class JobScreen extends StatelessWidget {
     ];
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(leading: Icon(Icons.menu), title: Text("Project")),
+        appBar: AppBar(title: Text("Project"), actions: [
+          Icon(Icons.arrow_back),
+        ]),
         body: SingleChildScrollView(
             child: Container(
           padding: const EdgeInsets.only(left: 14, top: 10, right: 14),
