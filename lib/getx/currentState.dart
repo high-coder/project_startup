@@ -17,6 +17,9 @@ class CurrentState extends GetxController {
   navigateUserToTheDesiredScreen() async{
     currentUser = await localStorage.getOurUser();
 
+
+    Get.offAll(OurLoginPage());
+    return;
     if(currentUser == null) {
       // Navigate the user to the Login Screen
       Get.offAll(OurLoginPage());

@@ -8,14 +8,17 @@ class OurUser {
   @HiveField(0)
   String? uid;
 
-  @HiveField(2)
+  @HiveField(1)
   String? email;
 
-  @HiveField(3)
+  @HiveField(2)
   String? name;
 
+  @HiveField(3)
+  String? universityId;
 
-
+  @HiveField(4)
+  String? universityName;
 
   /// from the map to convert the data back into the normal form
   factory OurUser.fromJson(Map<String, dynamic> data) {
@@ -23,7 +26,8 @@ class OurUser {
       uid: data['uid'],
       email: data['email'],
       name: data["name"],
-
+      universityId:data["universityId"],
+      universityName:data["universityName"],
     );
   }
 
@@ -33,6 +37,8 @@ class OurUser {
       "uid": uid,
       "email": email,
       "name":name,
+      "universityName":universityName,
+      "universityId":universityId,
     };
   }
 
@@ -41,5 +47,7 @@ class OurUser {
         this.email,
         this.name,
         this.uid,
+        this.universityId,
+        this.universityName
         });
 }

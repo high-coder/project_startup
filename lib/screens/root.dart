@@ -3,6 +3,10 @@ import 'package:get/get.dart';
 
 import '../getx/currentState.dart';
 
+/// This is the splash screen of the application which will
+/// also direct the user to the particular page
+
+
 
 class Root extends StatefulWidget {
   const Root({Key? key}) : super(key: key);

@@ -49,11 +49,50 @@ class MyColors {
   static const Color appThemeBlueText = Color(0xff4fa2f1);
   static const Color lightWightPBG = Color(0xfff0f0f0);
 
+  //static const Color primaryColor = Colors.black;
+  static const Color secondaryColor = Colors.white;
+
+
+
+
+  static const Map<int, Color> primaryColorCodes = {
+    50: Color.fromRGBO(12, 176, 117, .1),
+    100: Color.fromRGBO(12, 176, 117, .2),
+    200: Color.fromRGBO(12, 176, 117, .3),
+    300: Color.fromRGBO(12, 176, 117, .4),
+    400: Color.fromRGBO(12, 176, 117, .5),
+    500: Color.fromRGBO(12, 176, 117, .6),
+    600: Color.fromRGBO(12, 176, 117, .7),
+    700: Color.fromRGBO(12, 176, 117, .8),
+    800: Color.fromRGBO(12, 176, 117, .9),
+    900: Color.fromRGBO(12, 176, 117, 1),
+  };
+
+  static const MaterialColor primaryColor =
+  MaterialColor(0xFF4991F8, primaryColorCodes);
+
+  static const Color whiteColor = Colors.white;
+
+  /// This will be the theme data
+  static  ThemeData darkTheme = ThemeData(
+    brightness: Brightness.light,
+    primarySwatch: primaryColor,
+    scaffoldBackgroundColor: Colors.black,
+    backgroundColor: Colors.black,
+
+    bottomSheetTheme: BottomSheetThemeData(
+    backgroundColor: Colors.black)
+  );
+
 
 
   /// google logo colors
-  static const Color googleRed = const Color(0xffe43e2b);
-  static const Color googleYellow = const Color(0xfff0b501);
-  static const Color googleGreen = const Color(0xff2ba24c);
-  static const Color googleBlue = const Color(0xff3b7ded);
+  static const Color googleRed =  Color(0xffe43e2b);
+  static const Color googleYellow =  Color(0xfff0b501);
+  static const Color googleGreen =  Color(0xff2ba24c);
+  static const Color googleBlue =  Color(0xff3b7ded);
+  /// end of the google colors
+
+  static const Color greyCredColorTopWala =  Color(0xff121212);
+  static const Color greyCredColorDisabled = Color(0xff8a8a8a);
 }

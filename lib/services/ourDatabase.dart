@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:project_startup/models/collegeModel.dart';
 import 'package:project_startup/models/ourUser.dart';
 
 class OurDatabase {
@@ -71,4 +72,21 @@ class OurDatabase {
   //   return retVal;
   // }
 
+
+  /// have to decide on what database design to implement here
+  /// gonna be a complex one
+  Future<List<CollegeModel>> fetchUniversities() async{
+    List<CollegeModel> retVal = [];
+    try{
+      var snap = await _firestore.collection("collegeNames").doc("colleges").get();
+      snap.data()?["allColleges"]?.forEach((value) {
+        retVal.add(CollegeModel.fromJson(value));
+      });
+    }catch(e) {
+      print("something went wrong");
+      print(e);
+    }
+
+    return retVal;
+  }
 }

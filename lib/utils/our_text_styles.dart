@@ -445,4 +445,21 @@ class MyTextStyle {
     color: MyColors.soapStoneWhite,
     fontFamily: 'Poppins',
   );
+  static TextStyle helperTextGrey = GoogleFonts.openSans(
+    fontSize: 12.0,
+    fontWeight: FontWeight.w500,
+    color: MyColors.greyCredColorDisabled,
+    //fontFamily: 'Poppins',
+  );
+
+
+
+
+  static TextStyle headerMain = GoogleFonts.openSans(
+    color: Colors.white,
+    fontSize: 20,
+  );
+
+
+
 }

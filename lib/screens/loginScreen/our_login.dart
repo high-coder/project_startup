@@ -24,13 +24,13 @@ class OurLoginPage extends StatefulWidget {
 }
 
 class _OurLoginPageState extends State<OurLoginPage> {
-
   var isLoading = false;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final CurrentState _instance = Get.find();
   final AuthService authController = Get.put(AuthService());
+
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
@@ -42,56 +42,63 @@ class _OurLoginPageState extends State<OurLoginPage> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Stack(
             children: [
+
               SizedBox(
+                width: width,
+                height: height - 25,
+                //height: height / 3.3 > 270 ? 280 : height / 3.3,
+                //child: Lottie.asset("assets/lottie/login.json")
+                child: Lottie.network(
+                    "https://assets7.lottiefiles.com/private_files/lf30_wldncgll.json",fit: BoxFit.cover),
+              ),
+              Positioned(
+                bottom: 20,
+                child: Container(
                   width: width,
-                  height: height - 130,
-                  //height: height / 3.3 > 270 ? 280 : height / 3.3,
-                  child: Lottie.asset("assets/lottie/login.json")),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                  padding: EdgeInsets.all(20),
+                  child: NeoPopButton(
+                    color: Colors.white,
+                    bottomShadowColor: MyColors.googleGreen,
+                    rightShadowColor: MyColors.googleGreen,
+                    //leftShadowColor: MyColors.googleYellow,
+                    animationDuration: Duration(milliseconds: 100),
+                    depth: 3,
+                    onTapUp: () {
+                      print("someone is calling me here mate");
+                      authController.loginUserWithGoogle(context);
+                    },
+                    onTapDown: () {
+                      print("Calling me in the down area");
+                    },
 
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    child: NeoPopButton(
-                      color: Colors.black,
-                      bottomShadowColor: MyColors.googleGreen,
-                      rightShadowColor: MyColors.googleBlue,
-                      //leftShadowColor: MyColors.googleYellow,
-                      animationDuration: Duration(milliseconds: 100),
-                      depth: 3,
-                      onTapUp: () {
-                        print("someone is calling me here mate");
-                        authController.loginUserWithGoogle(context);
-                      },
-                      onTapDown: () {
-                        print("Calling me in the down area");
-                      },
-
-                      child: Padding(
-                        //padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                        padding: EdgeInsets.all(10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Login with Google",
-                                style: GoogleFonts.openSans(
-                                    color: Colors.white, fontSize: 15)),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Image.asset('assets/icons/Google.png')
-                          ],
-                        ),
+                    child: Padding(
+                      //padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Login with Google",
+                              style: GoogleFonts.openSans(
+                                  color: Colors.black, fontSize: 15)),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Image.asset('assets/icons/Google.png')
+                        ],
                       ),
                     ),
                   ),
-                ],
+                ),
               ),
+              // Positioned(
+              //   top: 40,
+              //   child:Container(
+              //     child: Text("Welcome to our application",style: MyTextStyle.headerMain,
+              //     ),
+              //   )
+              // )
             ],
           ),
         ),

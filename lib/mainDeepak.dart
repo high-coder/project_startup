@@ -4,6 +4,10 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:project_startup/models/ourUser.dart';
 import 'package:project_startup/screens/root.dart';
+import 'package:project_startup/utils/our_colours.dart';
+import 'package:project_startup/utils/our_text_styles.dart';
+
+import 'screens/dataCollection/userDataCollection.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,13 +26,18 @@ class ProjectStartup extends StatefulWidget {
 }
 
 class _ProjectStartupState extends State<ProjectStartup> {
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return GetMaterialApp(
         title: 'Project Startup',
         debugShowCheckedModeBanner: false,
-        //theme: theme,
+        theme: MyColors.darkTheme,
         //darkTheme: darkTheme,
-        home: Root());
+        home: UserDataCollection());
   }
 }
