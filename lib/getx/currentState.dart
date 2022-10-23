@@ -22,8 +22,8 @@ class CurrentState extends GetxController {
     UserDataControllerGet user = Get.find();
 
     //
-    Get.offAll(UserDataCollection(0));
-    return;
+    //Get.offAll(UserDataCollection(0));
+    //return;
     if(currentUser == null) {
       // Navigate the user to the Login Screen
       Get.offAll(() => const OurLoginPage());
