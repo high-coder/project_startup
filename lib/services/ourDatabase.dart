@@ -89,4 +89,62 @@ class OurDatabase {
 
     return retVal;
   }
+
+
+  /// this is used to update the college of the user in 3 parts of the database
+  Future<String> updateUserCollege(String collegeId,String userId) async{
+    String retVal = "error";
+
+    final batch = _firestore.batch();
+
+    try{
+      var doc1 = _firestore.collection("college").doc(collegeId);
+
+      batch.update(doc1,{
+        "users": FieldValue.arrayUnion([userId])
+      });
+
+      var doc2 = _firestore.collection("users").doc(userId);
+
+      batch.update(doc2, {
+        "collegeId":collegeId,
+      });
+
+      await batch.commit();
+      retVal = "success";
+    }catch(e) {
+      print(e);
+    }
+
+
+    return retVal;
+  }
+
+
+  Future<String> updateUserBranch(String userId,String branch) async{
+    String retVal = "error";
+    try {
+      await _firestore.collection("users").doc(userId).update({
+        "branch":branch,
+      });
+      retVal = "success";
+    }catch(e) {
+      print(e);
+    }
+    return retVal;
+  }
+  
+  Future<String> updateUserYearOfPassing(String userId,int yearOfPassing) async{
+    String retVal = "error";
+    try{
+      await _firestore.collection("users").doc(userId).update({
+        "yearOfPassing" : yearOfPassing,
+      });
+
+      retVal = "success";
+    }catch(e) {
+      print(e);
+    }
+    return retVal;
+  }
 }

@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:project_startup/getx/currentState.dart';
 import 'package:project_startup/screens/homeScreen/demoHome.dart';
+import 'package:project_startup/screens/loginScreen/our_login.dart';
 import 'package:project_startup/services/localStorage.dart';
 import 'package:project_startup/services/ourDatabase.dart';
 import 'package:project_startup/utils/error_assist.dart';
@@ -19,6 +21,7 @@ class AuthService extends GetxController{
     OurUser currentUser = OurUser();
 
 
+    CurrentState _instance = Get.find();
     GoogleSignIn _googleSignIn = GoogleSignIn();
     try {
       GoogleSignInAccount? _googleUser = await _googleSignIn.signIn();
@@ -64,7 +67,8 @@ class AuthService extends GetxController{
         }
       }
       if(retVal == "success") {
-        Get.offAll(Home());
+        //Get.offAll(Home());
+        _instance.navigateUserToTheDesiredScreen();
       } else{
         Get.showSnackbar(const GetSnackBar(message: "Something went wrong2",messageText: Text("Something went wrong"),));
 
@@ -82,4 +86,9 @@ class AuthService extends GetxController{
   }
 
 
+  logOut() async{
+    _auth.signOut();
+    localStorage.deleteOurUser();
+    Get.offAll(OurLoginPage());
+  }
 }

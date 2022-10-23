@@ -43,7 +43,7 @@ class LocalStorage {
         uid: "",
         email: "",
       );
-      await _userBox.put("user",ourUser);
+      await _userBox.delete("user");
     }catch(e) {
       print(e);
     }

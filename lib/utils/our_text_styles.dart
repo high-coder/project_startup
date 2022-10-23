@@ -457,7 +457,7 @@ class MyTextStyle {
 
   static TextStyle headerMain = GoogleFonts.openSans(
     color: Colors.white,
-    fontSize: 20,
+    fontSize: 26,
   );
 
 

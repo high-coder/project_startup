@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'ourUser.g.dart';
@@ -20,14 +21,22 @@ class OurUser {
   @HiveField(4)
   String? universityName;
 
+
+  @HiveField(5)
+  int? yearOfPassing;
+
+  @HiveField(6)
+  String? branch;
   /// from the map to convert the data back into the normal form
   factory OurUser.fromJson(Map<String, dynamic> data) {
     return OurUser(
       uid: data['uid'],
       email: data['email'],
       name: data["name"],
-      universityId:data["universityId"],
+      universityId:data["collegeId"],
       universityName:data["universityName"],
+      branch: data["branch"],
+      yearOfPassing: data["yearOfPassing"],
     );
   }
 
@@ -39,6 +48,8 @@ class OurUser {
       "name":name,
       "universityName":universityName,
       "universityId":universityId,
+      "yearOfPassing":yearOfPassing,
+      "branch":branch,
     };
   }
 
@@ -48,6 +59,7 @@ class OurUser {
         this.name,
         this.uid,
         this.universityId,
-        this.universityName
+        this.universityName,
+        this.branch,this.yearOfPassing
         });
 }

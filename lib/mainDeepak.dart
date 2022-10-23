@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:project_startup/models/ourUser.dart';
+import 'package:project_startup/screens/dataCollection/yearOfPassing.dart';
 import 'package:project_startup/screens/root.dart';
 import 'package:project_startup/utils/our_colours.dart';
 import 'package:project_startup/utils/our_text_styles.dart';
@@ -38,6 +39,6 @@ class _ProjectStartupState extends State<ProjectStartup> {
         debugShowCheckedModeBanner: false,
         theme: MyColors.darkTheme,
         //darkTheme: darkTheme,
-        home: UserDataCollection());
+        home: Root());
   }
 }
