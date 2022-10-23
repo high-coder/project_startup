@@ -72,9 +72,10 @@ class _YearOfPassingState extends State<YearOfPassing> {
                       disabledColor: MyColors.greyCredColorDisabled,
                       animationDuration: Duration(milliseconds: 100),
                       depth: 3.5,
-                      onTapUp: () {
+                      onTapUp: () async{
                         print("someone is calling me here mate");
-                        userData.updateUserYearOfPassing(dataList[selectedValue]);
+                        await userData.updateUserYearOfPassing(dataList[selectedValue]);
+                        userData.updateDetailsOfUser();
                         //authController.loginUserWithGoogle(context);
                       },
                       onTapDown: () {

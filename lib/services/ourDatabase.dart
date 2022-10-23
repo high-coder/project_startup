@@ -107,13 +107,37 @@ class OurDatabase {
       var doc2 = _firestore.collection("users").doc(userId);
 
       batch.update(doc2, {
-        "collegeId":collegeId,
+        "universityId":collegeId,
       });
 
       await batch.commit();
       retVal = "success";
     }catch(e) {
       print(e);
+    }
+
+
+    return retVal;
+  }
+
+
+
+  Future<String> updateAllDetailsOfUser(OurUser currentUser) async{
+    String retVal = "error";
+
+    try{
+      _firestore.collection("users").doc(currentUser.uid).update({
+        "yearOfPassing":currentUser.yearOfPassing,
+        "branch":currentUser.branch,
+        "universityId":currentUser.universityId,
+        "universityName":currentUser.universityName,
+      });
+
+      retVal = "success";
+    }catch(e) {
+
+      print(e);
+      print("something went wrong");
     }
 
 

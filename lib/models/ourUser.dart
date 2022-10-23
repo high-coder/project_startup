@@ -33,7 +33,7 @@ class OurUser {
       uid: data['uid'],
       email: data['email'],
       name: data["name"],
-      universityId:data["collegeId"],
+      universityId:data["universityId"],
       universityName:data["universityName"],
       branch: data["branch"],
       yearOfPassing: data["yearOfPassing"],

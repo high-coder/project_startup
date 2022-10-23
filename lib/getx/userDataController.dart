@@ -36,7 +36,6 @@ class UserDataControllerGet extends GetxController {
     yAnimationBranchName.value = 0.0;
     //Get.replace(() => UserDataControllerGet());
     state.value = 0;
-
     //state.value=0;
 
 
@@ -53,6 +52,7 @@ class UserDataControllerGet extends GetxController {
     xAnimation1UniName.value = -20.0;
     await Future.delayed(Duration(milliseconds:500));
 
+    print("Animation must be finished by now");
     startAnimationTwoBranchName();
   }
 
@@ -64,6 +64,8 @@ class UserDataControllerGet extends GetxController {
     //await Future.delayed(Duration(seconds:1));
 
     xAnimationBranchName.value = 0.0;
+    branchFocus.requestFocus();
+
   }
   /// state one animation ends here =========================================
 
@@ -79,6 +81,11 @@ class UserDataControllerGet extends GetxController {
         break;
       }
     }
+    print("this is the above of the college name ===========================");
+    print(selectedModel?.name);
+    print(selectedModel?.id);
+    print("this is the below of the college name ===========================");
+
     disableContinue.value = true;
     buttonColor = MyColors.whiteColor;
   }
@@ -124,13 +131,13 @@ class UserDataControllerGet extends GetxController {
   updateUserCollege() async{
     CurrentState _instance = Get.find();
     if(selectedModel!=null) {
-      String returnVal = await OurDatabase().updateUserCollege(selectedModel?.id ?? "",_instance.currentUser?.uid ?? "");
-      if(returnVal == "success") {
-        _instance.currentUser?.universityId = selectedModel?.id;
-        _instance.currentUser?.universityName = selectedModel?.name;
-        _instance.saveUpdatedUser();
-        Get.to(() =>const YearOfPassing());
-      }
+      //String returnVal = await OurDatabase().updateUserCollege(selectedModel?.id ?? "",_instance.currentUser?.uid ?? "");
+      //if(returnVal == "success") {
+      _instance.currentUser?.universityId = selectedModel?.id;
+      _instance.currentUser?.universityName = selectedModel?.name;
+      _instance.saveUpdatedUser();
+      //Get.to(() =>const YearOfPassing());
+      //}
     }
   }
 
@@ -138,26 +145,37 @@ class UserDataControllerGet extends GetxController {
   updateUserBranch() async{
     CurrentState _instance = Get.find();
     if(branch.text.isNotEmpty) {
-      String retVal = await OurDatabase().updateUserBranch(_instance.currentUser?.uid ?? "", branch.text);
-      if(retVal == "success") {
+      //String retVal = await OurDatabase().updateUserBranch(_instance.currentUser?.uid ?? "", branch.text);
+      //f(retVal == "success") {
         // do something here man
-        Get.to(()=>const YearOfPassing());
-      }
+      _instance.currentUser?.branch = branch.text;
+      _instance.saveUpdatedUser();
+
+       Get.to(()=>const YearOfPassing());
+      //}
     }
   }
 
   updateUserYearOfPassing(int yearOfPassing) async{
     CurrentState instance = Get.find();
     if(yearOfPassing!=null) {
-      String retVal = await OurDatabase().updateUserYearOfPassing(instance.currentUser?.uid ?? "",yearOfPassing);
+      //String retVal = await OurDatabase().updateUserYearOfPassing(instance.currentUser?.uid ?? "",yearOfPassing);
       instance.currentUser?.yearOfPassing = yearOfPassing;
       instance.saveUpdatedUser();
-      if(retVal == "success") {
-        // pass on the user to the branch selection page now
-        Get.offAll(Home());
-      }else {
-        // show the appropriate message to the user on the info about the error
-      }
+      // if(retVal == "success") {
+      //   // pass on the user to the branch selection page now
+      //   Get.offAll(Home());
+      // }else {
+      //   // show the appropriate message to the user on the info about the error
+      // }
+    }
+  }
+
+  updateDetailsOfUser() async{
+    final CurrentState instance = Get.find();
+    String retVal = await OurDatabase().updateAllDetailsOfUser(instance.currentUser!);
+    if(retVal == "success") {
+      Get.offAll(() => Home());
     }
   }
 

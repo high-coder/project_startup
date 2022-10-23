@@ -13,7 +13,9 @@ import 'package:searchfield/searchfield.dart';
 
 class UserDataCollection extends StatefulWidget {
   //final Map<String, dynamic> userData;
-  UserDataCollection();
+  int stateValue;
+
+  UserDataCollection(this.stateValue);
 
   @override
   _UserDataCollectionState createState() => _UserDataCollectionState();
@@ -24,7 +26,7 @@ class _UserDataCollectionState extends State<UserDataCollection> {
 
   //FocusNode collegeFocus = FocusNode();
   UserDataControllerGet userDataControllerGet =
-      Get.put(UserDataControllerGet());
+  Get.put(UserDataControllerGet());
 
   @override
   void initState() {
@@ -32,12 +34,21 @@ class _UserDataCollectionState extends State<UserDataCollection> {
     super.initState();
     //userDataControllerGet.universityController.requestFocus();
     userDataControllerGet.fetchUniversityNames();
-    userDataControllerGet.state.value = 0;
+    //userDataControllerGet.state.value = 0;
     // Future.delayed(Duration(seconds: 1))
     // .then((value) => collegeFocus.requestFocus());
 
     changeValue();
-    userDataControllerGet.startAnimationOneUniName();
+    if (widget.stateValue == 0) {
+      userDataControllerGet.startAnimationOneUniName();
+      //userDataControllerGet.collegeFocus.requestFocus();
+      Future.delayed(Duration(seconds: 1)).then((value) =>
+          userDataControllerGet.collegeFocus.requestFocus());
+    } else if (widget.stateValue == 1) {
+      userDataControllerGet.startAnimationTwoBranchName();
+      Future.delayed(Duration(seconds: 1)).then((value) =>
+          userDataControllerGet.branchFocus.requestFocus());
+    }
   }
 
   changeValue() async {
@@ -45,7 +56,8 @@ class _UserDataCollectionState extends State<UserDataCollection> {
       setState(() {
         x = -1;
       });
-      userDataControllerGet.collegeFocus.requestFocus();
+
+
     });
   }
 
@@ -64,15 +76,17 @@ class _UserDataCollectionState extends State<UserDataCollection> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return WillPopScope(
       onWillPop: () {
         bool status = false;
-        if(userDataControllerGet.state.value==1) {
+        if (userDataControllerGet.state.value == 1) {
           userDataControllerGet.startAnimationOneUniName();
-        }else {
+        } else {
           //return Future.value(status);
-          status =true;
+          status = true;
         }
         return Future.value(status);
         //return false;
@@ -81,14 +95,18 @@ class _UserDataCollectionState extends State<UserDataCollection> {
         //backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: SizedBox(
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Obx(() {
                   if (userDataControllerGet.state.value == 0) {
-                    return AnimatedContainerCustom(stringValue:"my university \nis",list: "college",);
+                    return AnimatedContainerCustom(
+                      stringValue: "my university \nis", list: "college",);
                   } else if (userDataControllerGet.state.value == 1) {
                     // return AnimatedContainer(
                     //   alignment: Alignment(userDataControllerGet.xAnimationBranchName.value,userDataControllerGet.yAnimationBranchName.value ),
@@ -176,7 +194,8 @@ class _UserDataCollectionState extends State<UserDataCollection> {
                     //     ],
                     //   ),
                     // );
-                    return AnimatedContainerCustom(stringValue: "my branch \nis",list: "branch",);
+                    return AnimatedContainerCustom(
+                      stringValue: "my branch \nis", list: "branch",);
                   } else {
                     return Container();
                   }
@@ -193,53 +212,71 @@ class _UserDataCollectionState extends State<UserDataCollection> {
                 /// cred button will go here
                 Padding(
                     padding:
-                        const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                    const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                     child: Obx(
-                      () => NeoPopButton(
-                        enabled: userDataControllerGet.disableContinue.value,
+                          () =>
+                          NeoPopButton(
+                            enabled: userDataControllerGet.disableContinue
+                                .value,
 
-                        color:userDataControllerGet.disableContinue.value == true ? MyColors.whiteColor : MyColors.greyCredColorDisabled,
+                            color: userDataControllerGet.disableContinue
+                                .value == true ? MyColors.whiteColor : MyColors
+                                .greyCredColorDisabled,
 
-                        //shadowColor: Colors.white,
+                            //shadowColor: Colors.white,
 
-                        bottomShadowColor:
+                            bottomShadowColor:
                             MyColors.greyCredColorDisabled.withOpacity(0.3),
-                        rightShadowColor: MyColors.whiteColor.withOpacity(0.7),
-                        //leftShadowColor: MyColors.googleYellow,
-                        disabledColor: MyColors.greyCredColorDisabled,
-                        animationDuration: Duration(milliseconds: 100),
-                        depth: 3.5,
-                        onTapUp: () {
-                          print("someone is calling me here mate");
-                          //userDataControllerGet.updateUserCollege();
-                          //userDataControllerGet.state.value =1;
-                          userDataControllerGet.stepTwoAnimationOneUniName();
-                          Future.delayed(Duration(seconds: 1)).then((value) => userDataControllerGet.branchFocus.requestFocus());
-                          //branchFocus.requestFocus();
-                          //authController.loginUserWithGoogle(context);
-                        },
-                        onTapDown: () {
-                          print("Calling me in the down area");
-                        },
+                            rightShadowColor: MyColors.whiteColor.withOpacity(
+                                0.7),
+                            //leftShadowColor: MyColors.googleYellow,
+                            disabledColor: MyColors.greyCredColorDisabled,
+                            animationDuration: Duration(milliseconds: 100),
+                            depth: 3.5,
+                            onTapUp: () async {
+                              print("someone is calling me here mate");
+                              //userDataControllerGet.updateUserCollege();
+                              //userDataControllerGet.state.value =1;
+                              if (userDataControllerGet.disableContinue.value) {
+                                if (userDataControllerGet.state.value == 1) {
+                                  userDataControllerGet.updateUserBranch();
+                                } else
+                                if (userDataControllerGet.state.value == 0) {
+                                  userDataControllerGet.updateUserCollege();
+                                  userDataControllerGet
+                                      .stepTwoAnimationOneUniName();
 
-                        child: Padding(
-                          //padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                          padding: EdgeInsets.all(20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Next    -->",
-                                  style: GoogleFonts.openSans(
-                                      color: !userDataControllerGet
+                                  // await Future.delayed(Duration(seconds: 1))
+                                  //     .then((value) =>
+                                  //     userDataControllerGet.branchFocus
+                                  //         .requestFocus());
+                                }
+                              }
+                              //branchFocus.requestFocus();
+                              //authController.loginUserWithGoogle(context);
+                            },
+                            onTapDown: () {
+                              print("Calling me in the down area");
+                            },
+
+                            child: Padding(
+                              //padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                              padding: EdgeInsets.all(20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Next    -->",
+                                      style: GoogleFonts.openSans(
+                                          color: !userDataControllerGet
                                               .disableContinue.value
-                                          ? Colors.white
-                                          : Colors.black,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold)),
-                            ],
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
                     )),
               ],
             ),

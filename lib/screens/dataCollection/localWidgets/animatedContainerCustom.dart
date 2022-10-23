@@ -8,18 +8,42 @@ import 'package:searchfield/searchfield.dart';
 import '../../../models/collegeModel.dart';
 import '../../../utils/our_colours.dart';
 
-class AnimatedContainerCustom extends StatelessWidget {
-
+class AnimatedContainerCustom extends StatefulWidget {
   String stringValue;
   String list;
-  AnimatedContainerCustom({required this.stringValue,required this.list});
 
+  AnimatedContainerCustom({required this.stringValue, required this.list});
+
+  @override
+  State<AnimatedContainerCustom> createState() => _AnimatedContainerCustomState();
+}
+
+class _AnimatedContainerCustomState extends State<AnimatedContainerCustom> {
   UserDataControllerGet userDataControllerGet = Get.find();
+
+   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if(widget.list=="college") {
+      userDataControllerGet.collegeFocus.requestFocus();
+    } else {
+      userDataControllerGet.branchFocus.requestFocus();
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
+    //userDataControllerGet.collegeFocus.requestFocus();
     Size size = MediaQuery.of(context).size;
-    return AnimatedContainer(
-      alignment:list=="college" ?Alignment(userDataControllerGet.xAnimation1UniName.value.toDouble(),userDataControllerGet.yAnimationUniName.value.toDouble() ) : Alignment(userDataControllerGet.xAnimationBranchName.value,userDataControllerGet.yAnimationBranchName.value ),
+    return Obx(() => AnimatedContainer(
+      alignment: widget.list == "college"
+          ? Alignment(userDataControllerGet.xAnimation1UniName.value.toDouble(),
+          userDataControllerGet.yAnimationUniName.value.toDouble())
+          : Alignment(userDataControllerGet.xAnimationBranchName.value,
+          userDataControllerGet.yAnimationBranchName.value),
       curve: Curves.bounceOut,
       width: double.infinity,
       color: MyColors.greyCredColorTopWala,
@@ -36,7 +60,7 @@ class AnimatedContainerCustom extends StatelessWidget {
               children: [
                 const Spacer(),
                 Text(
-                  stringValue,
+                  widget.stringValue,
                   style: MyTextStyle.headerMain,
                 ),
                 const SizedBox(
@@ -47,41 +71,37 @@ class AnimatedContainerCustom extends StatelessWidget {
                     width: 300,
                     //height: 40,
                     child: Obx(() => SearchField(
-                      //focusNode: userDataControllerGet.collegeFocus,
-                      searchStyle: GoogleFonts.openSans(
-                          color: Colors.white),
-                      searchInputDecoration:
-                      const InputDecoration(
+                      focusNode: widget.list== "college" ? userDataControllerGet.collegeFocus : userDataControllerGet.branchFocus,
+                      searchStyle:
+                      GoogleFonts.openSans(color: Colors.white),
+                      searchInputDecoration: const InputDecoration(
                         border: OutlineInputBorder(
                             borderSide: BorderSide(
-                                width: 1,
-                                color: Colors.black38)),
+                                width: 1, color: Colors.black38)),
                         focusedBorder: InputBorder.none,
                         enabledBorder: InputBorder.none,
                         disabledBorder: InputBorder.none,
                       ),
                       suggestionState: Suggestion.hidden,
-                      suggestionAction:
-                      SuggestionAction.next,
+                      suggestionAction: SuggestionAction.next,
 
-                      suggestions:list == "college" ? userDataControllerGet
-                          .collegeList
-                          .map((e) => SearchFieldListItem<
-                          CollegeModel>(
+                      suggestions: widget.list == "college"
+                          ? userDataControllerGet.collegeList
+                          .map((e) => SearchFieldListItem<CollegeModel>(
                         e.name,
                         child: Text(e.name),
                       ))
-                          .toList() : userDataControllerGet
-                        .branchList
-                        .map((e) =>
-                      SearchFieldListItem<String>(
-                      e,
-                      child: Text(e),
-                    ))
-                    .toList(),
+                          .toList()
+                          : userDataControllerGet.branchList
+                          .map((e) => SearchFieldListItem<String>(
+                        e,
+                        child: Text(e),
+                      ))
+                          .toList(),
                       textInputAction: TextInputAction.next,
-                      controller:
-                      list == "college" ?userDataControllerGet.name :userDataControllerGet.branch,
+                      controller: widget.list == "college"
+                          ? userDataControllerGet.name
+                          : userDataControllerGet.branch,
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
                           return "Please enter a Party name";
@@ -100,20 +120,16 @@ class AnimatedContainerCustom extends StatelessWidget {
                         print(x.child);
                         print(x.searchKey);
                         //_instance.userSelectedAPartyFetchItPlease(x.searchKey);
-                        if(list=="college") {
+                        if (widget.list == "college") {
                           userDataControllerGet
-                              .userSelectedCollege(
-                              x.searchKey);
+                              .userSelectedCollege(x.searchKey);
                         } else {
                           userDataControllerGet
-                              .userSelectedBranch(
-                              x.searchKey);
+                              .userSelectedBranch(x.searchKey);
                         }
-                        FocusManager.instance.primaryFocus
-                            ?.unfocus();
+                        FocusManager.instance.primaryFocus?.unfocus();
                       },
-                      emptyWidget:
-                      const Text("Nothing found"),
+                      emptyWidget: const Text("Nothing found"),
                     ))),
               ],
             ),
@@ -138,6 +154,6 @@ class AnimatedContainerCustom extends StatelessWidget {
           // )
         ],
       ),
-    );
+    ));
   }
 }
