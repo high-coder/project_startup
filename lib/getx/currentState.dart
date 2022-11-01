@@ -58,6 +58,10 @@ class CurrentState extends GetxController {
   }
 
 
+  /// this function will be used to send the connection request to the user
+  sendConnectionRequest() async{
+
+  }
 
 
 

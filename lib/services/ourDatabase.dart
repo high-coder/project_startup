@@ -3,6 +3,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:project_startup/models/collegeModel.dart';
 import 'package:project_startup/models/ourUser.dart';
 
+import '../models/pendingRequestModel.dart';
+
 class OurDatabase {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -169,6 +171,46 @@ class OurDatabase {
     }catch(e) {
       print(e);
     }
+    return retVal;
+  }
+
+
+  /// Step 1. Update the pending request array of the user
+  /// Step 2. Add metadata in the new document of the user that includes the dateTime,
+  /// Step 3. update the received request array of the sent user
+  /// TODO :Step 4. Add metadata in the new document of the received request collection --- dekhte hai if needed to krr lenge
+  /// All this time show loading to the user and then update the UI immediately
+  Future<String> sendConnectionRequestProcess(String uidUser, String uidFriend) async{
+    String retVal = "error";
+
+    final batch = _firestore.batch();
+
+
+    try{
+      /// Step 1:
+      var userPendingDoc = _firestore.collection("users").doc(uidUser);
+      batch.update(userPendingDoc, {
+        "pending":FieldValue.arrayUnion([uidFriend])
+      });
+
+      /// Step 2:
+      /// create a doc with uid of the userFriend which will later be transferred to the approved section or deleted all together
+      var userMetaData = _firestore.collection("users").doc(uidUser).collection("pending").doc(uidFriend);
+      PendingRequestModel sendRequest = PendingRequestModel(friendUid:uidFriend,requestSentTime:DateTime.now());
+      batch.set(userMetaData, sendRequest.toJson());
+
+      /// Step 3:
+      var friendPendingDoc = _firestore.collection("users").doc(uidFriend);
+      batch.update(friendPendingDoc, {
+        "received":FieldValue.arrayUnion([uidUser])
+      });
+
+      await batch.commit();
+      retVal = "success";
+    }catch(e) {
+      print(e);
+    }
+
     return retVal;
   }
 }
