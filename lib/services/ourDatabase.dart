@@ -180,7 +180,7 @@ class OurDatabase {
   /// Step 3. update the received request array of the sent user
   /// TODO :Step 4. Add metadata in the new document of the received request collection --- dekhte hai if needed to krr lenge
   /// All this time show loading to the user and then update the UI immediately
-  Future<String> sendConnectionRequestProcess(String uidUser, String uidFriend) async{
+  Future<String> sendConnectionRequestProcess(String uidUser, String uidFriend) async {
     String retVal = "error";
 
     final batch = _firestore.batch();
