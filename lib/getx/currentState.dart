@@ -117,6 +117,7 @@ class CurrentState extends GetxController {
       //movieController.sink.addError(SocketException("No Internet Connection"));
     } catch (e) {
       print(e.toString());
+      //lvd
       //movieController.sink.addError(e);
     }
   }
