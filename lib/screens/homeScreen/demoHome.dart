@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterfire_ui/auth.dart';
+
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_startup/getx/authController.dart';

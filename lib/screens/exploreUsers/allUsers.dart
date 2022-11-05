@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:flutterfire_ui/firestore.dart';
+
 import 'package:get/get.dart';
 
 import '../../getx/currentState.dart';
@@ -38,15 +38,15 @@ class _AllUsersState extends State<AllUsers> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: FirestoreListView<OurUser>(
-          query: _instance.snaps,
-          itemBuilder: (context, snapshot) {
-            final user = snapshot.data();
-            return Container(
-              child: Text("${user.name}"),
-            );
-          },
-        )
+        // child: FirestoreListView<OurUser>(
+        //   query: _instance.snaps,
+        //   itemBuilder: (context, snapshot) {
+        //     final user = snapshot.data();
+        //     return Container(
+        //       child: Text("${user.name}"),
+        //     );
+        //   },
+        // )
       ),
     );
   }
