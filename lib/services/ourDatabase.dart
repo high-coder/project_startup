@@ -14,7 +14,7 @@ class OurDatabase {
 
     try {
       await _firestore.collection('users').doc(user.uid).set(user.toJson());
-      retVal = "success";
+      retVal = "success"; // commit
     } catch (e) {
       print(e);
     }
