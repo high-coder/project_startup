@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:neopop/widgets/buttons/neopop_button/neopop_button.dart';
+import 'package:project_startup/components/buttons/transparent_button.dart';
 import 'package:project_startup/getx/userDataController.dart';
+import 'package:project_startup/models/button_model.dart';
 import 'package:project_startup/models/collegeModel.dart';
 import 'package:project_startup/screens/dataCollection/localWidgets/animatedContainerCustom.dart';
 import 'package:project_startup/utils/our_colours.dart';
@@ -106,7 +108,7 @@ class _UserDataCollectionState extends State<UserDataCollection> {
                 Obx(() {
                   if (userDataControllerGet.state.value == 0) {
                     return AnimatedContainerCustom(
-                      stringValue: "my university \nis", list: "college",);
+                      stringValue1: "my", list: "college",stringValue2: "university",stringValue3: "is",);
                   } else if (userDataControllerGet.state.value == 1) {
                     // return AnimatedContainer(
                     //   alignment: Alignment(userDataControllerGet.xAnimationBranchName.value,userDataControllerGet.yAnimationBranchName.value ),
@@ -195,7 +197,7 @@ class _UserDataCollectionState extends State<UserDataCollection> {
                     //   ),
                     // );
                     return AnimatedContainerCustom(
-                      stringValue: "my branch \nis", list: "branch",);
+                      stringValue1: "my",stringValue2: "branch",stringValue3: "is",list: "branch",);
                   } else {
                     return Container();
                   }
@@ -210,6 +212,7 @@ class _UserDataCollectionState extends State<UserDataCollection> {
                     )),
 
                 /// cred button will go here
+                //Container(padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),width:double.infinity,child: TransparentButton(buttonDetails: ButtonModel(border: false,icon: false,size: "custom",text: "Next ->",radius: 40,height: 60,width: 100))),
                 Padding(
                     padding:
                     const EdgeInsets.only(left: 20, right: 20, bottom: 20),
@@ -220,7 +223,7 @@ class _UserDataCollectionState extends State<UserDataCollection> {
                                 .value,
 
                             color: userDataControllerGet.disableContinue
-                                .value == true ? MyColors.whiteColor : MyColors
+                                .value == true ? MyColors.surface4 : MyColors
                                 .greyCredColorDisabled,
 
                             //shadowColor: Colors.white,
@@ -270,7 +273,7 @@ class _UserDataCollectionState extends State<UserDataCollection> {
                                           color: !userDataControllerGet
                                               .disableContinue.value
                                               ? Colors.white
-                                              : Colors.black,
+                                              : Colors.white,
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold)),
                                 ],

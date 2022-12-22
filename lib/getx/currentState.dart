@@ -27,28 +27,30 @@ class CurrentState extends GetxController {
     //
     //Get.offAll(UserDataCollection(0));
     //return;
+    return       Get.offAll(() =>  UserDataCollection(0));
+;
     if(currentUser == null) {
       // Navigate the user to the Login Screen
       Get.offAll(() => const OurLoginPage());
 
     } else {
       if(currentUser?.uid== null) {
-        Get.offAll(()=>const OurLoginPage());
+        Get.offAll(()=> const OurLoginPage());
       }else if(currentUser?.universityId==null){
         // Navigate the user to the home screen()
         //Get.offAll(Home());
-        return Get.offAll(UserDataCollection(0));
+        return Get.offAll(()=> UserDataCollection(0));
 
       } else if(currentUser?.branch == null) {
         // user.stepTwoAnimationOneUniName();
         // user.state.value=1;
         return Get.offAll(() => UserDataCollection(1));
       } else if(currentUser?.yearOfPassing == null) {
-        return Get.offAll(const YearOfPassing());
+        return Get.offAll(()=> const YearOfPassing());
       }
       else {
         // lets see
-        return Get.offAll(Home());
+        return Get.offAll(()=> Home());
       }
     }
   }

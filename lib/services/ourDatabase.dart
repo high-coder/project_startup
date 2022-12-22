@@ -28,15 +28,25 @@ class OurDatabase {
       // this block is running fine
       DocumentSnapshot _docSnapshot =
       await _firestore.collection("users").doc(uid).get();
-      print("Above the document snapshot data");
-      print(_docSnapshot.data());
-      print("below the document snapshot data");
-      //retVal(_docSnapshot.data()['name']);
+      if(_docSnapshot.exists) {
+        print("Above the document snapshot data");
+        print(_docSnapshot.data());
+        print("below the document snapshot data");
+        //retVal(_docSnapshot.data()['name']);
 
-      Map<String, dynamic>? data = _docSnapshot.data() as Map<String, dynamic>?;
-      retVal = OurUser.fromJson(_docSnapshot.data() as Map<String, dynamic>);
+        if(_docSnapshot.data()!=null) {
+          Map<String, dynamic>? data = (_docSnapshot.data()) as Map<String, dynamic>?;
+          retVal = OurUser.fromJson(_docSnapshot.data() as Map<String, dynamic>);
+        } else {
 
-      print("Exiting the get user information function now");
+        }
+
+
+        print("Exiting the get user information function now");
+      } else {
+        retVal.navigationThing = "doc-not-exist";
+      }
+
     } catch (e) {
       print("in the catch of the get user info");
       print(e);
