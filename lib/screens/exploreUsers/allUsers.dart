@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -15,7 +13,6 @@ class AllUsers extends StatefulWidget {
 }
 
 class _AllUsersState extends State<AllUsers> {
-
   ScrollController controller = ScrollController();
   CurrentState _instance = Get.find();
 
@@ -24,7 +21,9 @@ class _AllUsersState extends State<AllUsers> {
     // TODO: implement initState
     super.initState();
     controller.addListener(_scrollListener);
+    _instance.fetchFirstSetOfUsers();
   }
+
   void _scrollListener() {
     if (controller.offset >= controller.position.maxScrollExtent &&
         !controller.position.outOfRange) {
@@ -36,17 +35,43 @@ class _AllUsersState extends State<AllUsers> {
 
   @override
   Widget build(BuildContext context) {
+    print("somtsdhkjbnfg dsgbds fgibdsfg dsfgihadsfghibads");
     return Scaffold(
-      body: Container(
-        // child: FirestoreListView<OurUser>(
-        //   query: _instance.snaps,
-        //   itemBuilder: (context, snapshot) {
-        //     final user = snapshot.data();
-        //     return Container(
-        //       child: Text("${user.name}"),
-        //     );
-        //   },
-        // )
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Container(
+          // child: FirestoreListView<OurUser>(
+          //   query: _instance.snaps,
+          //   itemBuilder: (context, snapshot) {
+          //     final user = snapshot.data();
+          //     return Container(
+          //       child: Text("${user.name}"),
+          //     );
+          //   },
+          // )
+          child: Column(
+            children: [
+              Text("something random here mate "),
+              // here add the title of the page maybe a search button among other things
+              ListView.builder(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Container(
+                    child: Column(
+                      children: [
+                        Text(
+                            "name of the user : ${_instance.allUsers[index].name}"),
+                        // here add the accept and reject button
+                      ],
+                    ),
+                  );
+                },
+                itemCount: _instance.allUsers.length,
+                controller: controller,
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

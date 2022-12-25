@@ -14,7 +14,7 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: 0,
-          items: [
+          items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
             BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
             BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:project_startup/getx/authController.dart';
+import 'package:project_startup/screens/exploreUsers/allUsers.dart';
 
+import '../../getx/currentState.dart';
 import '../../getx/homePageController.dart';
 
 class Home extends StatefulWidget {
@@ -13,21 +14,27 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with TickerProviderStateMixin{
+class _HomeState extends State<Home> with TickerProviderStateMixin {
   AuthService authController = Get.find();
 
-  TabController ?_tabController;
+  TabController? _tabController;
 
-
+  CurrentState _instance = Get.find();
   @override
   void initState() {
     super.initState();
     _tabController = TabController(
-      initialIndex: 1,
+      initialIndex: 0,
       length: 5,
       vsync: this,
     );
+    // _tabController.
   }
+
+  void changeIndex() {
+    _homeController.changeTabIndex;
+  }
+
   HomePageController _homeController = Get.put(HomePageController());
 
   Color iconUnselectedColor = Colors.black;
@@ -48,75 +55,67 @@ class _HomeState extends State<Home> with TickerProviderStateMixin{
             //selectedLabelStyle: selectedLabelStyle,
             items: [
               BottomNavigationBarItem(
-                  icon: Container(
-                    margin: EdgeInsets.only(bottom: 7),
-                    child: Icon(
-                      Icons.airplanemode_active,
-                      size: 20.0,
-                      //color: iconUnselectedColor,
-                    ),
+                icon: Container(
+                  margin: EdgeInsets.only(bottom: 7),
+                  child: Icon(
+                    Icons.airplanemode_active,
+                    size: 20.0,
+                    //color: iconUnselectedColor,
                   ),
-                  label: 'Home',
+                ),
+                label: 'Home',
 
-                  //backgroundColor:appBgWildStrawberry
+                //backgroundColor:appBgWildStrawberry
               ),
               BottomNavigationBarItem(
-                  icon: Container(
-                    margin: EdgeInsets.only(bottom: 7),
-                    child: Icon(
-                      Icons.near_me,
-                      size: 20.0,
-                      //color: iconUnselectedColor,
-
-                    ),
+                icon: Container(
+                  margin: EdgeInsets.only(bottom: 7),
+                  child: Icon(
+                    Icons.near_me,
+                    size: 20.0,
+                    //color: iconUnselectedColor,
                   ),
-                  label: 'Explore',
-                  //backgroundColor:appBgWildStrawberry
-
+                ),
+                label: 'Explore',
+                //backgroundColor:appBgWildStrawberry
               ),
               BottomNavigationBarItem(
-                  icon: Container(
-                    margin: EdgeInsets.only(bottom: 7),
-                    child: Icon(
-                      Icons.whatshot,
-                      size: 20.0,
-                      //color: iconUnselectedColor,
-
-                    ),
+                icon: Container(
+                  margin: EdgeInsets.only(bottom: 7),
+                  child: Icon(
+                    Icons.whatshot,
+                    size: 20.0,
+                    //color: iconUnselectedColor,
                   ),
-                  label: 'Places',
-                  //backgroundColor:appBgWildStrawberry
-
+                ),
+                label: 'Places',
+                //backgroundColor:appBgWildStrawberry
               ),
               BottomNavigationBarItem(
-                  icon: Container(
-                    margin: EdgeInsets.only(bottom: 7),
-                    child: Icon(
-                      Icons.message,
-                      size: 20.0,
-                      //color: iconUnselectedColor,
-
-                    ),
+                icon: Container(
+                  margin: EdgeInsets.only(bottom: 7),
+                  child: Icon(
+                    Icons.message,
+                    size: 20.0,
+                    //color: iconUnselectedColor,
                   ),
-                  label: 'Settings',
-                  //backgroundColor:appBgWildStrawberry
-
+                ),
+                label: 'Settings',
+                //backgroundColor:appBgWildStrawberry
               ),
               BottomNavigationBarItem(
-                  icon: Container(
-                    margin: EdgeInsets.only(bottom: 7),
-                    child: Icon(
-                      Icons.settings,
+                icon: Container(
+                  margin: EdgeInsets.only(bottom: 7),
+                  child: Icon(
+                    Icons.settings,
 
-                      size: 20.0,
-                      //color: iconUnselectedColor,
-
-                    ),
+                    size: 20.0,
+                    //color: iconUnselectedColor,
                   ),
+                ),
 
-                  label: 'Settings',
-                  //backgroundColor:appBgWildStrawberry
-
+                label: 'Settings',
+                //backgroundColor:appBgWildStrawberry
               ),
             ],
           ),
@@ -126,8 +125,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       bottomNavigationBar: buildBottomNavigationMenu(context),
-
       body: SafeArea(
           // child:Column(
           //   children: [
@@ -145,19 +144,16 @@ class _HomeState extends State<Home> with TickerProviderStateMixin{
           //   ],
           // )
 
-        child:Container(
           child: TabBarView(
-            controller: _tabController,
-            children: [
-              Container(),
-              Container(),
-              Container(),
-              Container(),
-              Container(),
-            ],
-          ),
-        )
-      ),
+        controller: _tabController,
+        children: [
+          AllUsers(),
+          Container(child: Text("dsihfjndsbgikjubfgiujdesbhfg ")),
+          Container(),
+          Container(),
+          Container(),
+        ],
+      )),
     );
   }
 }
