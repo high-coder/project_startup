@@ -27,6 +27,8 @@ class OurUser {
 
   @HiveField(6)
   String? branch;
+
+  String? navigationThing; // doc-not-exist
   /// from the map to convert the data back into the normal form
   factory OurUser.fromJson(Map<String, dynamic> data) {
     return OurUser(
@@ -60,6 +62,6 @@ class OurUser {
         this.uid,
         this.universityId,
         this.universityName,
-        this.branch,this.yearOfPassing
+        this.branch,this.yearOfPassing,this.navigationThing,
         });
 }

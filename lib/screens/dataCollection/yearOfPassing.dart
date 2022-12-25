@@ -61,7 +61,7 @@ class _YearOfPassingState extends State<YearOfPassing> {
                       //enabled: userDataControllerGet.disableContinue.value,
 
                       //color: userDataControllerGet.buttonColor,
-                      color:Colors.white,
+                      color:MyColors.surface4,
 
                       shadowColor: Colors.white,
 
@@ -91,7 +91,7 @@ class _YearOfPassingState extends State<YearOfPassing> {
                             Text("Continue    -->",
                                 style: GoogleFonts.openSans(
                                     color:
-                                    Colors.black,
+                                    Colors.white,
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold)),
 

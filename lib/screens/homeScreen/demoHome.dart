@@ -124,6 +124,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    //authController.logOut();
+
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: buildBottomNavigationMenu(context),
@@ -145,6 +147,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           // )
 
           child: TabBarView(
+<<<<<<< HEAD
         controller: _tabController,
         children: [
           AllUsers(),
@@ -154,6 +157,21 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           Container(),
         ],
       )),
+=======
+            controller: _tabController,
+            children: [
+              Container(child:GestureDetector(onTap: () {
+                authController.logOut();
+              }, child:Text("log out",style: GoogleFonts.openSans(color: Colors.white),))),
+              Container(),
+              Container(),
+              Container(),
+              Container(),
+            ],
+          ),
+        )
+      ),
+>>>>>>> e742bf0f00986769ed71e0698933dcf6ada305c1
     );
   }
 }

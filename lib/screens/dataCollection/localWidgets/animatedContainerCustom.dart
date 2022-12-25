@@ -9,10 +9,12 @@ import '../../../models/collegeModel.dart';
 import '../../../utils/our_colours.dart';
 
 class AnimatedContainerCustom extends StatefulWidget {
-  String stringValue;
+  String stringValue1;
+  String stringValue2;
+  String stringValue3;
   String list;
 
-  AnimatedContainerCustom({required this.stringValue, required this.list});
+  AnimatedContainerCustom({required this.stringValue1,required this.stringValue2,required this.stringValue3, required this.list});
 
   @override
   State<AnimatedContainerCustom> createState() => _AnimatedContainerCustomState();
@@ -46,23 +48,54 @@ class _AnimatedContainerCustomState extends State<AnimatedContainerCustom> {
           userDataControllerGet.yAnimationBranchName.value),
       curve: Curves.bounceOut,
       width: double.infinity,
-      color: MyColors.greyCredColorTopWala,
+      color: MyColors.surface4,
       height: size.height / 2.5,
       duration: Duration(seconds: 1),
       child: Stack(
         children: <Widget>[
           //Container(width: size.width,height: 10,),
           Container(
+
+            decoration: BoxDecoration(
+
+                boxShadow: [
+                  // BoxShadow(
+                  //     blurRadius: 100,
+                  //     color: Color(0xff341F44),
+                  //     spreadRadius: 2)
+                ],
+               // color: MyColors.surface1,
+               //  border: Border.all(
+               //      color: MyColors.surface4, width: 2)
+            ),
             //width:size.width,
             padding: const EdgeInsets.only(top: 20, left: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Spacer(),
-                Text(
-                  widget.stringValue,
-                  style: MyTextStyle.headerMain,
-                ),
+                // Text(
+                //   widget.stringValue,
+                //   style: MyTextStyle.headerMain,
+                // ),
+            RichText(
+              text: TextSpan(
+                text: '${widget.stringValue1} ',
+                style: MyTextStyle.headerMain,
+                children: [
+                  TextSpan(
+                    text: '${widget.stringValue2}',
+                    style: GoogleFonts.inter(
+                      color: Color(0xffD682FF),
+                    ),
+                  ),
+                  TextSpan(
+                    text: '\n ${widget.stringValue3}',
+                    style: MyTextStyle.headerMain,
+                  ),
+                ],
+              ),
+            ),
                 const SizedBox(
                   height: 10,
                 ),

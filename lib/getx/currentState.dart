@@ -23,10 +23,17 @@ class CurrentState extends GetxController {
     //
     //Get.offAll(UserDataCollection(0));
     //return;
+<<<<<<< HEAD
     if (currentUser == null) {
+=======
+    return       Get.offAll(() =>  UserDataCollection(0));
+;
+    if(currentUser == null) {
+>>>>>>> e742bf0f00986769ed71e0698933dcf6ada305c1
       // Navigate the user to the Login Screen
       Get.offAll(() => const OurLoginPage());
     } else {
+<<<<<<< HEAD
       if (currentUser?.uid == null) {
         Get.offAll(() => const OurLoginPage());
       } else if (currentUser?.universityId == null) {
@@ -42,6 +49,25 @@ class CurrentState extends GetxController {
       } else {
         // lets see
         return Get.offAll(() => AllUsers());
+=======
+      if(currentUser?.uid== null) {
+        Get.offAll(()=> const OurLoginPage());
+      }else if(currentUser?.universityId==null){
+        // Navigate the user to the home screen()
+        //Get.offAll(Home());
+        return Get.offAll(()=> UserDataCollection(0));
+
+      } else if(currentUser?.branch == null) {
+        // user.stepTwoAnimationOneUniName();
+        // user.state.value=1;
+        return Get.offAll(() => UserDataCollection(1));
+      } else if(currentUser?.yearOfPassing == null) {
+        return Get.offAll(()=> const YearOfPassing());
+      }
+      else {
+        // lets see
+        return Get.offAll(()=> Home());
+>>>>>>> e742bf0f00986769ed71e0698933dcf6ada305c1
       }
     }
   }

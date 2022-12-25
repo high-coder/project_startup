@@ -77,8 +77,8 @@ class MyColors {
   static  ThemeData darkTheme = ThemeData(
     brightness: Brightness.light,
     primarySwatch: primaryColor,
-    scaffoldBackgroundColor: Colors.black,
-    backgroundColor: Colors.black,
+    scaffoldBackgroundColor: surfaceO,
+    backgroundColor: surface4,
 
     bottomSheetTheme: BottomSheetThemeData(
     backgroundColor: Colors.black)
@@ -95,4 +95,21 @@ class MyColors {
 
   static const Color greyCredColorTopWala =  Color(0xff121212);
   static const Color greyCredColorDisabled = Color(0xff8a8a8a);
+
+
+
+
+
+  ///  ------------------------------------- this is the new application theme -----------------------apptheming colors SURFACE COLORS
+  static const Color surfaceO =  Color(0xff110817);
+  static const Color surface1 =  Color(0xff170D1E);
+  static const Color surface4 =  Color(0xff291B31);
+  static const Color purpleColor = Color(0xff6F0FDB);
+  static const Color purpleColor2 = Color(0xff9C15DB);
+  static const Color textPurple = Color(0xffD682FF);
+  /// random colors
+  static const Color redColor=  Color(0xffFF7E76);
+
+  /// ---------------------------------------- end of the new application theme ----------------------///
+
 }

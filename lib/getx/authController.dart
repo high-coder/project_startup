@@ -58,6 +58,21 @@ class AuthService extends GetxController{
         print("this is an old user so lets welcome him/her");
         // get the information of the user from the database this already exists
         currentUser = await OurDatabase().getUserInfo(currentUser.uid ?? "");
+
+
+        /// this is the extreme case when the user details are not saved
+        if(currentUser.navigationThing!=null) {
+          if(currentUser.navigationThing == "doc-not-exist") {
+            // go out and create a doc with this user id
+            currentUser.email = _authResult.user?.email;
+            currentUser.name = _authResult.user?.displayName;
+            currentUser.uid = _authResult.user?.uid;
+            //print(_authResult.user.e)
+            print(currentUser.uid);
+            print(_authResult.user?.uid);
+            retVal = await OurDatabase().createUser(currentUser);
+          }
+        }
         print(currentUser.toJson());
         print("-------------------------------------------");
         if (currentUser.uid != null) {
@@ -65,6 +80,7 @@ class AuthService extends GetxController{
           //userBox.put("data", currentUser);
           localStorage.setLoggedIn(user: currentUser);
         }
+
       }
       if(retVal == "success") {
         //Get.offAll(Home());
