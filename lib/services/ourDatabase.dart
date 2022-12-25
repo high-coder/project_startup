@@ -26,34 +26,29 @@ class OurDatabase {
     try {
       // this block is running fine
       DocumentSnapshot _docSnapshot =
-<<<<<<< HEAD
           await _firestore.collection("users").doc(uid).get();
       print("Above the document snapshot data");
       print(_docSnapshot.data());
       print("below the document snapshot data");
       //retVal(_docSnapshot.data()['name']);
-=======
       await _firestore.collection("users").doc(uid).get();
-      if(_docSnapshot.exists) {
+      if (_docSnapshot.exists) {
         print("Above the document snapshot data");
         print(_docSnapshot.data());
         print("below the document snapshot data");
         //retVal(_docSnapshot.data()['name']);
->>>>>>> e742bf0f00986769ed71e0698933dcf6ada305c1
 
-        if(_docSnapshot.data()!=null) {
-          Map<String, dynamic>? data = (_docSnapshot.data()) as Map<String, dynamic>?;
-          retVal = OurUser.fromJson(_docSnapshot.data() as Map<String, dynamic>);
-        } else {
-
-        }
-
+        if (_docSnapshot.data() != null) {
+          Map<String, dynamic>? data =
+              (_docSnapshot.data()) as Map<String, dynamic>?;
+          retVal =
+              OurUser.fromJson(_docSnapshot.data() as Map<String, dynamic>);
+        } else {}
 
         print("Exiting the get user information function now");
       } else {
         retVal.navigationThing = "doc-not-exist";
       }
-
     } catch (e) {
       print("in the catch of the get user info");
       print(e);
@@ -214,10 +209,10 @@ class OurDatabase {
 
     try {
       /// Step 1:
-      // var userPendingDoc = _firestore.collection("users").doc(uidUser);
-      // batch.update(userPendingDoc, {
-      //   "pending": FieldValue.arrayUnion([uidFriend])
-      // });
+      var userPendingDoc = _firestore.collection("users").doc(uidUser);
+      batch.update(userPendingDoc, {
+        "pending": FieldValue.arrayUnion([uidFriend])
+      });
 
       /// Step 2:
       /// create a doc with uid of the userFriend which will later be transferred to the approved section or deleted all together
@@ -234,12 +229,16 @@ class OurDatabase {
       var friendPendingDoc = _firestore
           .collection("users")
           .doc(uidFriend)
-          .collection("pending")
+          .collection("received")
           .doc(uidUser);
       PendingRequestModel recieveRequest = PendingRequestModel(
           friendUid: uidUser, requestSentTime: DateTime.now());
       batch.set(friendPendingDoc, recieveRequest.toJson());
 
+      var userPendingDoc2 = _firestore.collection("users").doc(uidFriend);
+      batch.update(userPendingDoc2, {
+        "received": FieldValue.arrayUnion([uidUser])
+      });
       await batch.commit();
       retVal = "success";
     } catch (e) {

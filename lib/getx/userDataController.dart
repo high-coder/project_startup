@@ -19,17 +19,14 @@ class UserDataControllerGet extends GetxController {
 
   var disableContinue = false.obs;
 
-
   /// Important variable --------------------------------------------------
   var state = 0.obs; // o means select university // 1 means select branch
   /// Important variable ends ---------------------------------------------
 
-
-
   var xAnimation1UniName = 20.0.obs;
   var yAnimationUniName = 0.0.obs;
-  startAnimationOneUniName() async{
-    await Future.delayed(Duration(milliseconds:500));
+  startAnimationOneUniName() async {
+    await Future.delayed(Duration(milliseconds: 500));
     xAnimation1UniName.value = 0.0;
     yAnimationUniName.value = 0.0;
     xAnimationBranchName.value = 20.0;
@@ -37,46 +34,41 @@ class UserDataControllerGet extends GetxController {
     //Get.replace(() => UserDataControllerGet());
     state.value = 0;
     //state.value=0;
-
-
   }
 
   FocusNode collegeFocus = FocusNode();
   FocusNode branchFocus = FocusNode();
 
   /// state one animation begins here =======================================
-  stepTwoAnimationOneUniName() async{
+  stepTwoAnimationOneUniName() async {
     //await Future.delayed(Duration(seconds:1));
 
     disableContinue.value = false;
     xAnimation1UniName.value = -20.0;
-    await Future.delayed(Duration(milliseconds:500));
+    await Future.delayed(Duration(milliseconds: 500));
 
     print("Animation must be finished by now");
     startAnimationTwoBranchName();
   }
 
-
   var xAnimationBranchName = 20.0.obs;
   var yAnimationBranchName = 0.0.obs;
-  startAnimationTwoBranchName() async{
-    state.value=1;
+  startAnimationTwoBranchName() async {
+    state.value = 1;
     //await Future.delayed(Duration(seconds:1));
 
     xAnimationBranchName.value = 0.0;
     branchFocus.requestFocus();
-
   }
+
   /// state one animation ends here =========================================
 
-
-
   Color buttonColor = MyColors.greyCredColorDisabled;
-  CollegeModel ?selectedModel;
+  CollegeModel? selectedModel;
   userSelectedCollege(String collegeName) {
     name.text = collegeName;
     for (var element in collegeList) {
-      if(element.name == collegeName) {
+      if (element.name == collegeName) {
         selectedModel = element;
         break;
       }
@@ -94,12 +86,9 @@ class UserDataControllerGet extends GetxController {
     branch.text = branchVal;
     disableContinue.value = true;
     buttonColor = MyColors.whiteColor;
-
   }
 
-
   toggleColors() {
-
     disableContinue.value = false;
     buttonColor = MyColors.greyCredColorDisabled;
   }
@@ -112,13 +101,14 @@ class UserDataControllerGet extends GetxController {
     "Electrical",
     "Electrical and Computers"
   ].obs;
+
   /// This will ne used to fetch the university names
-  fetchUniversityNames() async{
+  fetchUniversityNames() async {
     collegeList.value = await OurDatabase().fetchUniversities();
     name.addListener(() {
       print(name.text);
-      if(selectedModel !=null) {
-        if(name.text!=selectedModel?.name) {
+      if (selectedModel != null) {
+        if (name.text != selectedModel?.name) {
           selectedModel = null;
           toggleColors();
         }
@@ -126,11 +116,10 @@ class UserDataControllerGet extends GetxController {
     });
   }
 
-
   /// this will be used to update the college of the user
-  updateUserCollege() async{
+  updateUserCollege() async {
     CurrentState _instance = Get.find();
-    if(selectedModel!=null) {
+    if (selectedModel != null) {
       //String returnVal = await OurDatabase().updateUserCollege(selectedModel?.id ?? "",_instance.currentUser?.uid ?? "");
       //if(returnVal == "success") {
       _instance.currentUser?.universityId = selectedModel?.id;
@@ -141,24 +130,23 @@ class UserDataControllerGet extends GetxController {
     }
   }
 
-
-  updateUserBranch() async{
+  updateUserBranch() async {
     CurrentState _instance = Get.find();
-    if(branch.text.isNotEmpty) {
+    if (branch.text.isNotEmpty) {
       //String retVal = await OurDatabase().updateUserBranch(_instance.currentUser?.uid ?? "", branch.text);
       //f(retVal == "success") {
-        // do something here man
+      // do something here man
       _instance.currentUser?.branch = branch.text;
       _instance.saveUpdatedUser();
 
-       Get.to(()=>const YearOfPassing());
+      Get.to(() => const YearOfPassing());
       //}
     }
   }
 
-  updateUserYearOfPassing(int yearOfPassing) async{
+  updateUserYearOfPassing(int yearOfPassing) async {
     CurrentState instance = Get.find();
-    if(yearOfPassing!=null) {
+    if (yearOfPassing != null) {
       //String retVal = await OurDatabase().updateUserYearOfPassing(instance.currentUser?.uid ?? "",yearOfPassing);
       instance.currentUser?.yearOfPassing = yearOfPassing;
       instance.saveUpdatedUser();
@@ -171,12 +159,12 @@ class UserDataControllerGet extends GetxController {
     }
   }
 
-  updateDetailsOfUser() async{
+  updateDetailsOfUser() async {
     final CurrentState instance = Get.find();
-    String retVal = await OurDatabase().updateAllDetailsOfUser(instance.currentUser!);
-    if(retVal == "success") {
+    String retVal =
+        await OurDatabase().updateAllDetailsOfUser(instance.currentUser!);
+    if (retVal == "success") {
       Get.offAll(() => Home());
     }
   }
-
 }

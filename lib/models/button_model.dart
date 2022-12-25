@@ -9,9 +9,11 @@ class ButtonModel {
   double? radius;
   Color? borderColor;
   IconData? iconB;
+  Color? buttonColor;
   String size; // sm-small, md- medium, lg-large
   ButtonModel(
       {required this.text,
+      this.buttonColor,
       required this.size,
       required this.icon,
       required this.border,

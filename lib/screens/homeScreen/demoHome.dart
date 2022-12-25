@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:project_startup/getx/authController.dart';
 import 'package:project_startup/screens/exploreUsers/allUsers.dart';
 
@@ -31,8 +32,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     // _tabController.
   }
 
-  void changeIndex() {
-    _homeController.changeTabIndex;
+  void changeIndex(int indexValue) {
+    _homeController.changeTabIndex(indexValue);
+    _tabController?.index = indexValue;
+    print(_tabController?.index);
+    setState(() {});
   }
 
   HomePageController _homeController = Get.put(HomePageController());
@@ -46,7 +50,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           child: BottomNavigationBar(
             showUnselectedLabels: false,
             showSelectedLabels: false,
-            onTap: _homeController.changeTabIndex,
+            onTap: changeIndex,
             currentIndex: _homeController.tabIndex.value,
             backgroundColor: Colors.black,
             unselectedItemColor: iconUnselectedColor,
@@ -127,9 +131,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     //authController.logOut();
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      bottomNavigationBar: buildBottomNavigationMenu(context),
-      body: SafeArea(
+        //backgroundColor: Colors.white,
+        bottomNavigationBar: buildBottomNavigationMenu(context),
+        body: SafeArea(
           // child:Column(
           //   children: [
           //     Text(
@@ -146,32 +150,28 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           //   ],
           // )
 
-          child: TabBarView(
-<<<<<<< HEAD
-        controller: _tabController,
-        children: [
-          AllUsers(),
-          Container(child: Text("dsihfjndsbgikjubfgiujdesbhfg ")),
-          Container(),
-          Container(),
-          Container(),
-        ],
-      )),
-=======
-            controller: _tabController,
-            children: [
-              Container(child:GestureDetector(onTap: () {
-                authController.logOut();
-              }, child:Text("log out",style: GoogleFonts.openSans(color: Colors.white),))),
-              Container(),
-              Container(),
-              Container(),
-              Container(),
-            ],
+          child: GetBuilder<HomePageController>(
+            builder: (contexttt) {
+              return TabBarView(
+                controller: _tabController,
+                children: [
+                  Container(
+                      child: GestureDetector(
+                          onTap: () {
+                            authController.logOut();
+                          },
+                          child: Text(
+                            "log out",
+                            style: GoogleFonts.openSans(color: Colors.white),
+                          ))),
+                  Container(),
+                  Container(),
+                  AllUsers(),
+                  Container(),
+                ],
+              );
+            },
           ),
-        )
-      ),
->>>>>>> e742bf0f00986769ed71e0698933dcf6ada305c1
-    );
+        ));
   }
 }

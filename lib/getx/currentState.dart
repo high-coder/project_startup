@@ -8,6 +8,7 @@ import 'package:project_startup/screens/dataCollection/yearOfPassing.dart';
 import 'package:project_startup/screens/homeScreen/demoHome.dart';
 import 'package:project_startup/screens/loginScreen/our_login.dart';
 import 'package:project_startup/services/localStorage.dart';
+import 'package:project_startup/services/ourDatabase.dart';
 
 import '../models/ourUser.dart';
 import '../screens/exploreUsers/allUsers.dart';
@@ -23,17 +24,10 @@ class CurrentState extends GetxController {
     //
     //Get.offAll(UserDataCollection(0));
     //return;
-<<<<<<< HEAD
     if (currentUser == null) {
-=======
-    return       Get.offAll(() =>  UserDataCollection(0));
-;
-    if(currentUser == null) {
->>>>>>> e742bf0f00986769ed71e0698933dcf6ada305c1
       // Navigate the user to the Login Screen
       Get.offAll(() => const OurLoginPage());
     } else {
-<<<<<<< HEAD
       if (currentUser?.uid == null) {
         Get.offAll(() => const OurLoginPage());
       } else if (currentUser?.universityId == null) {
@@ -48,26 +42,7 @@ class CurrentState extends GetxController {
         return Get.offAll(const YearOfPassing());
       } else {
         // lets see
-        return Get.offAll(() => AllUsers());
-=======
-      if(currentUser?.uid== null) {
-        Get.offAll(()=> const OurLoginPage());
-      }else if(currentUser?.universityId==null){
-        // Navigate the user to the home screen()
-        //Get.offAll(Home());
-        return Get.offAll(()=> UserDataCollection(0));
-
-      } else if(currentUser?.branch == null) {
-        // user.stepTwoAnimationOneUniName();
-        // user.state.value=1;
-        return Get.offAll(() => UserDataCollection(1));
-      } else if(currentUser?.yearOfPassing == null) {
-        return Get.offAll(()=> const YearOfPassing());
-      }
-      else {
-        // lets see
-        return Get.offAll(()=> Home());
->>>>>>> e742bf0f00986769ed71e0698933dcf6ada305c1
+        return Get.offAll(() => Home());
       }
     }
   }
@@ -78,7 +53,21 @@ class CurrentState extends GetxController {
   }
 
   /// this function will be used to send the connection request to the user
-  sendConnectionRequest() async {}
+  sendConnectionRequest(String uidConnection, int index) async {
+    String retVal = await OurDatabase()
+        .sendConnectionRequestProcess(currentUser?.uid ?? "", uidConnection);
+    if (retVal == "success") {
+      // here change the ui of the application
+      allUsers[index].relation = "Pending";
+      if (currentUser?.pending != null) {
+        currentUser?.pending?.add(uidConnection);
+      } else {
+        currentUser?.pending = [];
+        currentUser?.pending?.add(uidConnection);
+        update();
+      }
+    }
+  }
 
   var snaps;
   fetchAllUserUsingPaginationMate() async {
@@ -96,8 +85,18 @@ class CurrentState extends GetxController {
   List<OurUser> allUsers = [];
   List<DocumentSnapshot> documentList = [];
 
+  // from here fetch all sets of the users
+  runMeAtFirst() async {
+    currentUser = await OurDatabase().getUserInfo(currentUser?.uid ??
+        ""); // this will give us the updated data of the user
+    print("here printing the p[endingn user of hte palication");
+    print(currentUser?.pending);
+    await fetchFirstSetOfUsers();
+  }
+
   /// It will fetch the first 10 users to display in the application
   fetchFirstSetOfUsers() async {
+    allUsers.clear();
     try {
       var documentList = (await FirebaseFirestore.instance
               .collection("users")
@@ -109,8 +108,10 @@ class CurrentState extends GetxController {
       print(documentList.length);
       for (var element in documentList) {
         print(element.data());
+
         allUsers.add(OurUser.fromJson(element.data()));
       }
+      sortEverythingHereMan(0);
       update();
       //movieController.sink.add(documentList);
     } on SocketException {
@@ -118,6 +119,51 @@ class CurrentState extends GetxController {
     } catch (e) {
       print(e.toString());
       //movieController.sink.addError(e);
+    }
+  }
+
+  sortEverythingHereMan(int startAt) {
+    // here i have to loop through the pending and received and friends list
+
+    List friends = currentUser?.friends ?? [];
+    for (var element in allUsers) {
+      print("entering the top level loop");
+      bool breakOuter = false;
+      for (var uidMatch in friends) {
+        if (element.uid == uidMatch) {
+          element.relation = "Friend";
+          breakOuter = true;
+          //continue;
+          break;
+        }
+      }
+      if (breakOuter == true) {
+        continue;
+      }
+      List pending = currentUser?.pending ?? [];
+      for (var uidMatch in pending) {
+        if (element.uid == uidMatch) {
+          print("matching here to the pending thing");
+          element.relation = "Pending";
+          breakOuter = true;
+          break;
+        }
+      }
+      if (breakOuter == true) {
+        continue;
+      }
+
+      List recieved = currentUser?.recieved ?? [];
+      for (var uidMatch in recieved) {
+        if (element.uid == uidMatch) {
+          element.relation = "Received";
+          breakOuter = true;
+          break;
+        }
+      }
+      if (breakOuter == true) {
+        continue;
+      }
     }
   }
 
@@ -141,6 +187,134 @@ class CurrentState extends GetxController {
       print(e.toString());
       //lvd
       //movieController.sink.addError(e);
+    }
+  }
+
+  /// this will be used to fetch allConnections of the user -----------
+  //List<DocumentSnapshot> connectionDocumentsList = [];
+  List<OurUser> connectionsList = [];
+  fetchConnections(int start) async {
+    /// I will have the list of the friends of the user in the currentUser and
+    /// then I will have to fetch the details of the user one by one
+    ///
+    if (currentUser?.friends != null) {
+      print(currentUser?.friends?.length);
+      // send the ids for fetching 10 at a time
+      int length = currentUser?.friends?.length ?? 0;
+      int end = length;
+      if (length > 10) {
+        // here send the first 10 ids for fetching
+        if (start < length) {
+        } else {
+          start = length - 1;
+        }
+        if (start + 10 < length) {
+          end = start + 10;
+        } else {
+          end = length;
+        }
+        currentUser?.friends?.getRange(start, end).forEach((element) async {
+          var data = await FirebaseFirestore.instance
+              .collection("users")
+              .doc(element)
+              .get();
+          connectionsList.add(OurUser.fromJson(data.data() ?? {}));
+        });
+      } else {
+        currentUser?.friends?.forEach((element) async {
+          var data = await FirebaseFirestore.instance
+              .collection("users")
+              .doc(element)
+              .get();
+          connectionsList.add(OurUser.fromJson(data.data() ?? {}));
+        });
+      }
+    } else {
+      print("The user has no friends he/she is lonely");
+    }
+  }
+
+  List<OurUser> receivedList = [];
+  fetchRequests(int start) async {
+    /// I will have the list of the friends of the user in the currentUser and
+    /// then I will have to fetch the details of the user one by one
+    ///
+    if (currentUser?.recieved != null) {
+      print(currentUser?.recieved?.length);
+      // send the ids for fetching 10 at a time
+      int length = currentUser?.recieved?.length ?? 0;
+      int end = length;
+      if (length > 10) {
+        // here send the first 10 ids for fetching
+        if (start < length) {
+        } else {
+          start = length - 1;
+        }
+        if (start + 10 < length) {
+          end = start + 10;
+        } else {
+          end = length;
+        }
+        currentUser?.recieved?.getRange(start, end).forEach((element) async {
+          var data = await FirebaseFirestore.instance
+              .collection("users")
+              .doc(element)
+              .get();
+          receivedList.add(OurUser.fromJson(data.data() ?? {}));
+        });
+      } else {
+        currentUser?.recieved?.forEach((element) async {
+          var data = await FirebaseFirestore.instance
+              .collection("users")
+              .doc(element)
+              .get();
+          receivedList.add(OurUser.fromJson(data.data() ?? {}));
+        });
+      }
+    } else {
+      print("The user has no friends he/she is lonely");
+    }
+  }
+
+  List<OurUser> pendingConnections = [];
+  fetchSentConnectionRequests(int start) async {
+    /// I will have the list of the friends of the user in the currentUser and
+    /// then I will have to fetch the details of the user one by one
+    ///
+    if (currentUser?.pending != null) {
+      print(currentUser?.pending?.length);
+      // send the ids for fetching 10 at a time
+      int length = currentUser?.pending?.length ?? 0;
+      int end = length;
+      if (length > 10) {
+        // here send the first 10 ids for fetching
+        if (start < length) {
+        } else {
+          start = length - 1;
+        }
+        if (start + 10 < length) {
+          end = start + 10;
+        } else {
+          end = length;
+        }
+        currentUser?.pending?.getRange(start, end).forEach((element) async {
+          var data = await FirebaseFirestore.instance
+              .collection("users")
+              .doc(element)
+              .get();
+          pendingConnections.add(OurUser.fromJson(data.data() ?? {}));
+        });
+      } else {
+        currentUser?.pending?.forEach((element) async {
+          var data = await FirebaseFirestore.instance
+              .collection("users")
+              .doc(element)
+              .get();
+          pendingConnections.add(OurUser.fromJson(data.data() ?? {}));
+        });
+      }
+    } else {
+      print("The user has no friends he/she is lonely");
     }
   }
 }
