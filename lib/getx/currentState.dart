@@ -92,6 +92,8 @@ class CurrentState extends GetxController {
     print("here printing the p[endingn user of hte palication");
     print(currentUser?.pending);
     await fetchFirstSetOfUsers();
+    //await fetchNextUsers();
+    update();
   }
 
   /// It will fetch the first 10 users to display in the application
@@ -108,8 +110,10 @@ class CurrentState extends GetxController {
       print(documentList.length);
       for (var element in documentList) {
         print(element.data());
-
-        allUsers.add(OurUser.fromJson(element.data()));
+        if (element.data()["uid"] == currentUser?.uid) {
+        } else {
+          allUsers.add(OurUser.fromJson(element.data()));
+        }
       }
       sortEverythingHereMan(0);
       update();
@@ -165,21 +169,30 @@ class CurrentState extends GetxController {
         continue;
       }
     }
+
+    update();
   }
 
   /// this function will be called again and again to fetch new users
   fetchNextUsers() async {
     try {
+      print("Entering the functions");
       //updateIndicator(true);
-      List<DocumentSnapshot> newDocumentList = (await FirebaseFirestore.instance
+      var newDocumentList = (await FirebaseFirestore.instance
               .collection("users")
               .orderBy("name")
               .where("universityId", isEqualTo: currentUser?.universityId)
-              .startAfterDocument(documentList[documentList.length - 1])
+              .startAfterDocument(documentList[documentList.length])
               .limit(10)
               .get())
           .docs;
       documentList.addAll(newDocumentList);
+      print(newDocumentList.length);
+      for (var element in newDocumentList) {
+        print(element.data());
+        allUsers.add(OurUser.fromJson(element.data()));
+      }
+      sortEverythingHereMan(0);
       //movieController.sink.add(documentList);
     } on SocketException {
       //movieController.sink.addError(SocketException("No Internet Connection"));
@@ -194,7 +207,6 @@ class CurrentState extends GetxController {
   //List<DocumentSnapshot> connectionDocumentsList = [];
   List<OurUser> connectionsList = [];
   fetchConnections(int start) async {
-    /// I will have the list of the friends of the user in the currentUser and
     /// then I will have to fetch the details of the user one by one
     ///
     if (currentUser?.friends != null) {
@@ -316,5 +328,7 @@ class CurrentState extends GetxController {
     } else {
       print("The user has no friends he/she is lonely");
     }
+
+    //update();
   }
 }

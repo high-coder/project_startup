@@ -35,6 +35,7 @@ class _AllUsersState extends State<AllUsers> {
         !controller.position.outOfRange) {
       print("at the end of list");
       //movieListBloc.fetchNextMovies();
+      _instance.fetchNextUsers();
       // fetch more users here
     }
   }
