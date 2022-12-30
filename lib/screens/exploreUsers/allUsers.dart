@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project_startup/components/buttons/transparent_button.dart';
 import 'package:project_startup/models/button_model.dart';
 import 'package:project_startup/screens/exploreUsers/allConnections.dart';
+import 'package:project_startup/screens/exploreUsers/connectionRecieved.dart';
 import 'package:project_startup/screens/exploreUsers/connectionSent.dart';
 import 'package:project_startup/utils/our_text_styles.dart';
 
@@ -92,7 +93,7 @@ class _AllUsersState extends State<AllUsers> {
                     ),
                     TransparentButton(
                       onTapp: () {
-                        Get.to(() => ConnectionsSent());
+                        Get.to(() => ConnectionRecieved());
                       },
                       buttonDetails: ButtonModel(
                           border: false,
@@ -170,7 +171,11 @@ class _AllUsersState extends State<AllUsers> {
                                   } else if (_instance
                                           .allUsers[index].relation ==
                                       "Received") {
-                                    return Text("REc");
+                                    return Text(
+                                      "REc",
+                                      style: GoogleFonts.openSans(
+                                          color: Colors.white),
+                                    );
                                   } else if (_instance
                                           .allUsers[index].relation ==
                                       "Friend") {

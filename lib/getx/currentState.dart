@@ -91,7 +91,7 @@ class CurrentState extends GetxController {
     currentUser = await OurDatabase().getUserInfo(currentUser?.uid ??
         ""); // this will give us the updated data of the user
     print("here printing the p[endingn user of hte palication");
-    print(currentUser?.pending);
+    print(currentUser?.received);
     await fetchFirstSetOfUsers();
     //await fetchNextUsers();
     update();
@@ -158,7 +158,7 @@ class CurrentState extends GetxController {
         continue;
       }
 
-      List recieved = currentUser?.recieved ?? [];
+      List recieved = currentUser?.received ?? [];
       for (var uidMatch in recieved) {
         if (element.uid == uidMatch) {
           element.relation = "Received";
@@ -252,10 +252,10 @@ class CurrentState extends GetxController {
     /// I will have the list of the friends of the user in the currentUser and
     /// then I will have to fetch the details of the user one by one
     ///
-    if (currentUser?.recieved != null) {
-      print(currentUser?.recieved?.length);
+    if (currentUser?.received != null) {
+      print(currentUser?.received?.length);
       // send the ids for fetching 10 at a time
-      int length = currentUser?.recieved?.length ?? 0;
+      int length = currentUser?.received?.length ?? 0;
       int end = length;
       if (length > 10) {
         // here send the first 10 ids for fetching
@@ -268,7 +268,7 @@ class CurrentState extends GetxController {
         } else {
           end = length;
         }
-        currentUser?.recieved?.getRange(start, end).forEach((element) async {
+        currentUser?.received?.getRange(start, end).forEach((element) async {
           var data = await FirebaseFirestore.instance
               .collection("users")
               .doc(element)
@@ -276,7 +276,7 @@ class CurrentState extends GetxController {
           receivedList.add(OurUser.fromJson(data.data() ?? {}));
         });
       } else {
-        currentUser?.recieved?.forEach((element) async {
+        currentUser?.received?.forEach((element) async {
           var data = await FirebaseFirestore.instance
               .collection("users")
               .doc(element)

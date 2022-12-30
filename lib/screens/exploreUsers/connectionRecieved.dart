@@ -49,6 +49,7 @@ class _ConnectionRecievedState extends State<ConnectionRecieved> {
   Widget build(BuildContext context) {
     return ScreenLoader(
       child: Scaffold(
+        backgroundColor: Colors.red,
         body: SafeArea(
           child: Column(
             children: [

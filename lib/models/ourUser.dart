@@ -28,7 +28,7 @@ class OurUser {
   String? branch;
 
   List? pending;
-  List? recieved;
+  List? received;
   List? friends;
   List? blocked;
 
@@ -49,7 +49,7 @@ class OurUser {
       blocked: data["blocked"],
       friends: data["friends"],
       pending: data["pending"],
-      recieved: data["recieved"],
+      received: data["received"],
     );
   }
 
@@ -78,7 +78,7 @@ class OurUser {
     this.blocked,
     this.friends,
     this.pending,
-    this.recieved,
+    this.received,
     this.relation,
   });
 }

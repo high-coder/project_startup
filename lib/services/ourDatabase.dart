@@ -256,7 +256,7 @@ class OurDatabase {
 
       /// If the user approves the conncetion request
       if (decision == "accept") {
-        final batch = _firestore.batch();
+        //final batch = _firestore.batch();
 
         /// --------------------- Removing operations ------------------///
         // Step 1. Remove it from the recieved list of the user
@@ -264,14 +264,20 @@ class OurDatabase {
         _firestore.runTransaction((transaction) async {
           final snapshot = await transaction.get(userDoc);
           List receivedList = snapshot.get("received");
+          print("printing the received list here mate");
+          print(receivedList);
 
           /// If the updated data contains the friends uid then update it
           /// with the latest functions
           if (receivedList.contains(friend.uid)) {
+            print("The id has matched now letts do other things");
+
             /// ----------------------------- Deleting here --------------------///
             transaction.update(userDoc, {
               "received": FieldValue.arrayRemove([friend.uid])
             });
+            //final batch = _firestore.batch();
+            print("Step 1 complete");
             var step2 = _firestore
                 .collection("users")
                 .doc(user.uid)
@@ -320,11 +326,12 @@ class OurDatabase {
               "acceptedTime": DateTime.now(),
             });
           }
-        }).then((value) => print("Document updated successfulyy"));
-        var step1 = _firestore.collection("users").doc(user.uid);
-        step1.update({
-          "received": FieldValue.arrayRemove([friend.uid])
-        });
+        }).then((value) => print("Document updated successfulyy"),
+            onError: (e) => print("something went wrong here man"));
+        // var step1 = _firestore.collection("users").doc(user.uid);
+        // step1.update({
+        //   "received": FieldValue.arrayRemove([friend.uid])
+        // });
       } else {
         _firestore.runTransaction((transaction) async {
           final snapshot = await transaction.get(userDoc);
