@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:project_startup/getx/screenDisable.dart';
 import 'package:project_startup/getx/userDataController.dart';
 import 'package:project_startup/screens/dataCollection/userDataCollection.dart';
 import 'package:project_startup/screens/dataCollection/yearOfPassing.dart';
@@ -330,5 +331,23 @@ class CurrentState extends GetxController {
     }
 
     //update();
+  }
+
+  // this will be used to accept or reject a connection request
+  actionOnConnectionRequest(String decision, int index) async {
+    disableScreen(true);
+    print("Calling the function here");
+    await OurDatabase()
+        .actionOnConnReq(decision, currentUser!, receivedList[index]);
+
+    // TODO: if the function returns with success then update the list as well
+
+    disableScreen(false);
+    print("The function is over now");
+  }
+
+  disableScreen(bool value) {
+    ScreenDisableController controller = Get.find();
+    controller.disableScreen.value = value;
   }
 }

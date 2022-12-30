@@ -21,6 +21,7 @@ class _ConnectionRequestsState extends State<ConnectionRequests> {
   int numberOfPagePerRequest = 10;
   @override
   void initState() {
+    _instance.pendingConnections.clear();
     // TODO: implement initState
     super.initState();
     _scrollController = ScrollController();

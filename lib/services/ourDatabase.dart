@@ -247,4 +247,116 @@ class OurDatabase {
 
     return retVal;
   }
+
+  /// this is the database function that will do its thing
+  actionOnConnReq(String decision, OurUser user, OurUser friend) {
+    try {
+      final userDoc = _firestore.collection("users").doc(user.uid);
+      final friendDoc = _firestore.collection("users").doc(friend.uid);
+
+      /// If the user approves the conncetion request
+      if (decision == "accept") {
+        final batch = _firestore.batch();
+
+        /// --------------------- Removing operations ------------------///
+        // Step 1. Remove it from the recieved list of the user
+
+        _firestore.runTransaction((transaction) async {
+          final snapshot = await transaction.get(userDoc);
+          List receivedList = snapshot.get("received");
+
+          /// If the updated data contains the friends uid then update it
+          /// with the latest functions
+          if (receivedList.contains(friend.uid)) {
+            /// ----------------------------- Deleting here --------------------///
+            transaction.update(userDoc, {
+              "received": FieldValue.arrayRemove([friend.uid])
+            });
+            var step2 = _firestore
+                .collection("users")
+                .doc(user.uid)
+                .collection("received")
+                .doc(friend.uid);
+            transaction.delete(step2);
+
+            /// ------------------------------ End of deleting -----------------///
+
+            /// -------------------------------- Adding new info- ---------------///
+            transaction.update(userDoc, {
+              "friends": FieldValue.arrayUnion([friend.uid])
+            });
+            var step3 = _firestore
+                .collection("users")
+                .doc(user.uid)
+                .collection("freinds")
+                .doc(friend.uid);
+            transaction.set(step3,
+                {"friendUid": friend.uid, "acceptedTime": DateTime.now()});
+
+            /// --------------------------------- End of adding new info --------------------///
+            /// -----------------------------------------End of updating the local user -----------///
+
+            /// ---------------------------------------------------------- Updating the vlaues of the friend ------------------------///
+
+            transaction.update(friendDoc, {
+              "pending": FieldValue.arrayRemove([user.uid])
+            });
+            final step2Again = _firestore
+                .collection("users")
+                .doc(friend.uid)
+                .collection("pending")
+                .doc(user.uid);
+            transaction.delete(step2Again);
+            transaction.update(friendDoc, {
+              "friends": FieldValue.arrayUnion([user.uid])
+            });
+            final co = _firestore
+                .collection("users")
+                .doc(friend.uid)
+                .collection("friends")
+                .doc(user.uid);
+            transaction.set(co, {
+              "friendUid": user.uid,
+              "acceptedTime": DateTime.now(),
+            });
+          }
+        }).then((value) => print("Document updated successfulyy"));
+        var step1 = _firestore.collection("users").doc(user.uid);
+        step1.update({
+          "received": FieldValue.arrayRemove([friend.uid])
+        });
+      } else {
+        _firestore.runTransaction((transaction) async {
+          final snapshot = await transaction.get(userDoc);
+          List receivedList = snapshot.get("received");
+
+          /// If the updated data contains the friends uid then update it
+          /// with the latest functions
+          if (receivedList.contains(friend.uid)) {
+            transaction.update(userDoc, {
+              "received": FieldValue.arrayRemove([friend.uid])
+            });
+            var step2 = _firestore
+                .collection("users")
+                .doc(user.uid)
+                .collection("received")
+                .doc(friend.uid);
+            transaction.delete(step2);
+
+            /// below we are managing the data of the remote user who sent the request
+            transaction.update(friendDoc, {
+              "pending": FieldValue.arrayRemove([user.uid])
+            });
+            final step2Again = _firestore
+                .collection("users")
+                .doc(friend.uid)
+                .collection("pending")
+                .doc(user.uid);
+            transaction.delete(step2Again);
+          }
+        }).then((value) => print("successfully rejected the user request"),
+            onError: (e) => print("something went wrong $e"));
+      }
+    } catch (e) {}
+  }
 }

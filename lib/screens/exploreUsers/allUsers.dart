@@ -86,7 +86,19 @@ class _AllUsersState extends State<AllUsers> {
                           border: false,
                           icon: false,
                           size: 'lg',
-                          text: 'Sent Requests ',
+                          text: 'Sent ',
+                          buttonColor: Colors.blue,
+                          iconB: Icons.check),
+                    ),
+                    TransparentButton(
+                      onTapp: () {
+                        Get.to(() => ConnectionsSent());
+                      },
+                      buttonDetails: ButtonModel(
+                          border: false,
+                          icon: false,
+                          size: 'lg',
+                          text: 'Recieved',
                           buttonColor: Colors.blue,
                           iconB: Icons.check),
                     ),
